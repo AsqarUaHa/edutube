@@ -79,7 +79,7 @@ function Pdf() {
         ],
       };
 
-      const convertAPIEndpoint = 'https://v2.convertapi.com/convert/pdf/to/txt?Secret=kvZsIPvDdSd9m3YNJ1XoGWyd5K1L7jSx';
+      const convertAPIEndpoint = 'https://v2.convertapi.com/convert/pdf/to/txt?Secret=Yt04BFwTKQjEz1lWvC2296vUuSITtTNQ';
       const uploadResponse = await axios.post(convertAPIEndpoint, requestBody, {
         headers: {
           'Content-Type': 'application/json',
