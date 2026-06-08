@@ -8,7 +8,7 @@ function Home() {
     <div className="min-h-screen bg-gray-100 flex flex-col items-center py-10">
       {/* Header Section */}
       <header className="text-center mb-12">
-        <div className="text-6xl font-extrabold text-gray-800 mb-4">Welcome to EduVerse</div>
+        <div className="text-6xl font-extrabold text-gray-800 mb-4">Welcome to EduTube</div>
         <p className="text-xl text-gray-600">
           Empowering you with tools and resources to enhance your learning experience.
         </p>
