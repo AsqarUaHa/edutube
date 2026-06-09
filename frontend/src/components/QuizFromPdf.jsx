@@ -21,7 +21,7 @@ function Quiz({ textFromPDF }) {
     setError('');
     try {
       const prompt = `Generate 10 multiple-choice questions (MCQs) from ${textFromPDF} in JSON format that I can directly use in a React component. Each question should include a 'question' field (the question text), an 'options' field (an array of 4 options), and an 'answer' field (the correct option from the 'options' array). Ensure the output is valid JSON, without explanations, comments, or additional text.`;
-      const response = await axios.post('https://codecubicles-backend.onrender.com/api/v1/ai/chat', { prompt });
+      const response = await axios.post('http://localhost:3000/api/v1/ai/chat', { prompt });
       const data = response.data;
       const jsonData = JSON.parse(extractJSON(data.data));
 

@@ -12,7 +12,7 @@ function Summarizer() {
     setLoading(true);
     try {
       const prompt = `Exaplain this ${topic} in just ${lines} lines like you would explain this to a layman with some example.`;
-      const response = await axios.post("https://codecubicles-backend.onrender.com/api/v1/ai/chat", { prompt });
+      const response = await axios.post("http://localhost:3000/api/v1/ai/chat", { prompt });
       const data = response.data;
       setSummaryData(data.data);
       setIsSummaryLoaded(true);

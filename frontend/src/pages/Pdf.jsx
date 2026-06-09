@@ -43,7 +43,7 @@ function Pdf() {
     setError('');
     try {
       const prompt = `Summarize this ${textDataFromPDF} in easy language like you would explain this to a layman with some example and give the response in markdown with left align.`;
-      const response = await axios.post('https://codecubicles-backend.onrender.com/api/v1/ai/chat', { prompt });
+      const response = await axios.post('http://localhost:3000/api/v1/ai/chat', { prompt });
       setSummary(response.data.data);
     } catch (err) {
       setError('Failed to summarize text.');
@@ -52,7 +52,7 @@ function Pdf() {
     }
   };
 
-  // Function to handle file upload and summarization
+  // Function to handle file upload and text extraction
   const handleFileUpload = async () => {
     if (!file) {
       setError('Please select a PDF file first.');
@@ -62,42 +62,31 @@ function Pdf() {
     setLoading(true);
     setError('');
     try {
-      const base64File = await fileToBase64(file);
-      const requestBody = {
-        Parameters: [
-          {
-            Name: 'File',
-            FileValue: {
-              Name: file.name,
-              Data: base64File,
-            },
-          },
-          {
-            Name: 'StoreFile',
-            Value: true,
-          },
-        ],
-      };
+      // Create FormData to send file
+      const formData = new FormData();
+      formData.append('file', file);
 
-      const convertAPIEndpoint = 'https://v2.convertapi.com/convert/pdf/to/txt?Secret=GuB4EualMRQhlrfGZ0LvmO9o7gaCq87z';
-      const uploadResponse = await axios.post(convertAPIEndpoint, requestBody, {
+      // Send to backend
+      const response = await axios.post('http://localhost:3000/api/v1/ai/pdf', formData, {
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data',
         },
       });
 
-      const extractedTextUrl = uploadResponse.data.Files[0].Url;
-      const textResponse = await axios.get(extractedTextUrl);
-      
-      const formattedSummary = textResponse.data
+      // Get extracted text
+      const extractedText = response.data.data;
+
+      // Format and trim text
+      const formattedText = extractedText
         .replace(/'/g, '')
         .replace(/[\n\r]+/g, ' ')
         .replace(/["]+/g, '');
 
-      const trimmedSummary = createAndTrimString(formattedSummary, 2500, ' ');
-      setTextDataFromPDF(trimmedSummary);
+      const trimmedText = createAndTrimString(formattedText, 2500, ' ');
+      setTextDataFromPDF(trimmedText);
     } catch (err) {
-      setError('Error occurred during file upload or summarization.');
+      console.error('Upload error:', err);
+      setError('Error occurred during file upload or text extraction.');
     } finally {
       setLoading(false);
     }
